@@ -19,11 +19,11 @@ os-image: boot/boot_sect.bin kernel.bin
 		cat $^ > ./cdcontent/os-image
 
 kernel.bin: kernel/kernel_entry.o ${OBJ} kernel/kprint_hex.o kernel/descriptor_load.o kernel/interrupt.o
-		x86_64-elf-gcc -ffreestanding -z max-page-size=0x1000 -o $@ -T ./kernel/linker.ld $^ -nostdlib -lgcc 
+		arm-none-eabi-gcc -ffreestanding -z max-page-size=0x1000 -o $@ -T ./kernel/linker.ld $^ -nostdlib -lgcc 
 
 %.o: %.c ${HEADERS}
-		x86_64-elf-gcc -ffreestanding -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -c $< -o $@ 
-		x86_64-elf-gcc -S -ffreestanding -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -c $< 
+		arm-none-eabi-gcc -ffreestanding -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -c $< -o $@ 
+		arm-none-eabi-gcc -S -ffreestanding -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -c $< 
 
 %.o: %.asm 
 		nasm $< -f elf64 -o $@
